@@ -387,15 +387,15 @@ ul#nav li a:focus {
 .single-slide-item {
     position: relative;
     background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    background-size: cover;
+    -webkit-background-size: cover !important;
+    background-size: cover !important;
     background-position: left center;
 }
 
 .hero-bg-1 {
    /* background-image: url('../images/slider-1.jpg'); */
-    -webkit-background-size: cover;
-    background-size: cover;
+    -webkit-background-size: cover !important;
+    background-size: cover !important;
 }
 
 .overlay-bg {

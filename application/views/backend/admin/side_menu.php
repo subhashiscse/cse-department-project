@@ -1,6 +1,6 @@
 <?php 
 	$admin_id = $this->session->userdata('admin_id');
-   	$data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+   	$data['admin_info']=$this->db->where('User_Id',$admin_id)->get('admininfo')->row();
 ?>
 
 <div class="sidebar sidebar-main">
@@ -12,8 +12,8 @@
 					<h4 style="padding-left: 8%">Dashboard</h4>
 				</div> -->
 				<div class="media">
-					<?php if($data['user_info']->user_image){ ?>
-					<a href="#" class="media-left"><img style="width:150px;height:150px; border-radius: 15px;"src="<?php echo base_url('assets/images/'.$data['user_info']->user_image) ?>" alt=""></a>
+					<?php if($data['admin_info']->User_Image){ ?>
+					<a href="#" class="media-left"><img style="width:150px;height:150px; border-radius: 15px;"src="<?php echo base_url('assets/images/'.$data['admin_info']->User_Image) ?>" alt=""></a>
 					<?php }
 					else { ?>
 						<a href="#" class="media-left"><img style="width:150px;height:150px; border-radius: 15px;"src="<?php echo base_url('assets/images/person.JPG') ?>" alt=""></a>

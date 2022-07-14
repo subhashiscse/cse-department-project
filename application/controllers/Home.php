@@ -22,13 +22,13 @@ class Home extends CI_Controller {
     public function authentication_process() 
     {
         $userinformation = $this->set_login_information($this->secure_data());
-        $res = $this->User->user_validation("users", $userinformation);
+        $res = $this->User->user_validation('admininfo', $userinformation);
         $confirm = $this->set_confirmation_msg($res, "Login Success", "Email and Password not match");
         if ($confirm == 1) 
         {
-            $this->session->set_userdata('admin_id', $res->user_id);
-            $this->session->set_userdata('admin_name', $res->user_name);
-            $this->session->set_userdata('admin_email', $res->user_email);
+            $this->session->set_userdata('admin_id', $res->User_Id);
+            $this->session->set_userdata('admin_name', $res->User_Name);
+            $this->session->set_userdata('admin_email', $res->User_Email);
             redirect('dashboard_admin','location');
         } 
         else 
@@ -55,8 +55,8 @@ class Home extends CI_Controller {
             $this->set_confirmation_msg("","","Please Enter The Valid Data");
             redirect('login_admin','location');
         }
-        $userinformation = array('user_email' => $this->input->post('email'),
-            'user_password' => md5($this->input->post('password'))
+        $userinformation = array('User_Email' => $this->input->post('email'),
+            'User_password' => md5($this->input->post('password'))
         );
         return $userinformation;
     }

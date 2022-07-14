@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /my_project
+RewriteBase /cse_department_project
 RewriteCond %{REQUEST_URI} ^system.*
 RewriteRule ^(.*)$ index.php?/$1 [L]
 RewriteCond %{REQUEST_URI} ^application.*

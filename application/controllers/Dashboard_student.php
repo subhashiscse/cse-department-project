@@ -153,7 +153,7 @@ class Dashboard_student extends CI_Controller
     }
     public function save_app_admin()
     {
-        $admin_info=$this->db->get('users')->row();
+        $admin_info=$this->db->get('admininfo')->row();
         $date=new DateTime();
         $student_id = $this->session->userdata('student_id');
         $student_info=$this->db->where('student_id',$student_id)->get('students')->row();

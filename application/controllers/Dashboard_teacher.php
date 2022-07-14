@@ -111,7 +111,7 @@ class Dashboard_teacher extends CI_Controller
      }
      public function save_notice_admin()
       {
-          $admin_info=$this->db->get('users')->row();
+          $admin_info=$this->db->get('admininfo')->row();
           $date=new DateTime();
           $teacher_id = $this->session->userdata('teacher_id');
           $teacher_info=$this->db->where('teacher_id',$teacher_id)->get('teachers')->row();

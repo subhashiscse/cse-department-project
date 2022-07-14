@@ -21,13 +21,13 @@ class Login_admin extends CI_Controller {
     public function authentication_process() 
     {
         $userinformation = $this->set_login_information($this->secure_data());
-        $res = $this->User->user_validation("users", $userinformation);
+        $res = $this->User->user_validation('admininfo', $userinformation);
         $confirm = $this->set_confirmation_msg($res, "Login Success", "Email and Password not match");
         if ($confirm == 1) 
         {
-            $this->session->set_userdata('admin_id', $res->user_id);
-            $this->session->set_userdata('admin_name', $res->user_name);
-            $this->session->set_userdata('admin_email', $res->user_email);
+            $this->session->set_userdata('admin_id', $res->User_Id);
+            $this->session->set_userdata('admin_name', $res->User_Name);
+            $this->session->set_userdata('admin_email', $res->User_Email);
             redirect('dashboard_admin','location');
         } 
         else 

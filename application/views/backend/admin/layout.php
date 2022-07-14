@@ -41,7 +41,7 @@
 	<!-- /theme JS files -->
 	<?php 
 		$admin_id = $this->session->userdata('admin_id');
-	   	$data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+	   	$data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
 	?>
 
 </head>
@@ -64,8 +64,8 @@
 			<ul class="nav navbar-nav navbar-right" >
 				<li class="dropdown dropdown-user" style="margin-top: 3%;background-color: #151815;border-radius: 5%">
 					<a class="dropdown-toggle" data-toggle="dropdown">
-						<?php if($data['user_info']->user_image){ ?>
-						<img src="<?php echo base_url('assets/images/'.$data['user_info']->user_image) ?>">
+						<?php if($data['admin_info']->User_Image){ ?>
+						<img src="<?php echo base_url('assets/images/'.$data['admin_info']->User_Image) ?>">
 						<?php } 
 						else {?>
 							<img src="<?php echo base_url('assets/images/person.JPG') ?>">

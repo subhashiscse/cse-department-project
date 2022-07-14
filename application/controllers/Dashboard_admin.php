@@ -9,7 +9,7 @@ class Dashboard_admin extends CI_Controller
    public function index()
    {  
       $admin_id = $this->session->userdata('admin_id');
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
       $data['active_nav'] = "dashboard";
       $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
       $data['main_content'] = $this->load->view('backend/admin/dashboard/dashboard',$data,TRUE);
@@ -25,8 +25,8 @@ class Dashboard_admin extends CI_Controller
    public function update_password()
    {
       $admin_id = $this->session->userdata('admin_id');
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
-      $main_pass=$data['user_info']->user_password;
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
+      $main_pass=$data['admin_info']->User_Password;
       $old_pass=md5($this->input->post('old_pass'));
       $new_pass=md5($this->input->post('new_pass'));
       $ret_new_pass=md5($this->input->post('ret_new_pass'));
@@ -35,10 +35,10 @@ class Dashboard_admin extends CI_Controller
           if($new_pass==$ret_new_pass)
           {
               $data = array(
-                  'user_password' => md5($this->input->post('ret_new_pass')),
+                  'User_Password' => md5($this->input->post('ret_new_pass')),
               );
-              $this->db->where("user_id", $admin_id);  
-              $this->db->update("users", $data);  
+              $this->db->where("User_id", $admin_id);  
+              $this->db->update('admininfo', $data);  
               $this->session->set_flashdata('msg', '<p class="alert alert-success">Password Update Successfully</p>');
               redirect('dashboard_admin/password_change','location');
           }
@@ -58,7 +58,7 @@ class Dashboard_admin extends CI_Controller
    {
       $data['active_nav'] = "see_own_profile";
       $admin_id = $this->session->userdata('admin_id');
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
       $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
       $data['main_content'] = $this->load->view('backend/admin/dashboard/view_profile','$data',TRUE);
       $this->load->view('backend/admin/layout',$data);
@@ -67,7 +67,7 @@ class Dashboard_admin extends CI_Controller
    {
       $data['active_nav'] = "see_own_profile";
       $admin_id = $this->session->userdata('admin_id');
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
       $data['settings']=$this->db->where('id',$admin_id)->get('settings')->row();
       $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
       $data['main_content']=$this->load->view('backend/admin/dashboard/settings','$data',TRUE);
@@ -189,7 +189,7 @@ class Dashboard_admin extends CI_Controller
         $settings=$this->db->where('id',1)->get('settings')->row();
         $notice_subject="New Meeting (AC) "." (".$meeting_title.")";
         $notice_description=$settings->meeting_join_info." Time:".$meeting_time." (".$meeting_date.")";
-        $user_info=$this->db->where('user_id',1)->get('users')->row();
+        $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
         foreach ($teacherList as $row) 
         {
           $data1 = array(
@@ -197,7 +197,7 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => $notice_subject,
                 'notice_description' => $notice_description,
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $meetingMemberList=array(
             'meeting_id'=> $insert_id,
@@ -278,14 +278,14 @@ class Dashboard_admin extends CI_Controller
         $settings=$this->db->where('id',1)->get('settings')->row();
         $notice_subject="New Meeting"." (".$meeting_list->meeting_title.")";
         $notice_description=$settings->meeting_join_info." Time:".$meeting_list->meeting_time." (".$meeting_list->meeting_date.")";
-        $user_info=$this->db->where('user_id',1)->get('users')->row();
+        $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
         $date=new DateTime();
         $noticeData = array(
               'user_email' => $item,
               'notice_subject' => $notice_subject,
               'notice_description' => $notice_description,
               'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-               'notice_sender'=>trim($user_info->user_name),
+               'notice_sender'=>trim($admin_info->User_Name),
           );
           $this->Common->set_data("notices", $noticeData);
       }
@@ -437,7 +437,7 @@ class Dashboard_admin extends CI_Controller
             'meeting_date'=>trim($this->input->post('meeting_date')),
             'meeting_time'=>trim($this->input->post('meeting_time')),
         );
-      $user_info=$this->db->where('user_id',1)->get('users')->row();
+      $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
       $settings=$this->db->where('id',1)->get('settings')->row();
       $this->db->where("meeting_id", $meeting_id);  
       $this->db->update("meeting_list", $data);
@@ -456,7 +456,7 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => $notice_subject,
                 'notice_description' => $notice_description,
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $this->Common->set_data("notices", $data);
         }
@@ -472,7 +472,7 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => $notice_subject,
                 'notice_description' => $notice_description,
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $this->Common->set_data("notices", $data);
         }
@@ -572,7 +572,7 @@ class Dashboard_admin extends CI_Controller
       $data['active_nav'] = "assign_course";
       $admin_id = $this->session->userdata('admin_id');
       $data['session_list'] = $this->Common->get_data_sort_order('session','session','asc')->result();
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
       $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
       $data['main_content'] = $this->load->view('backend/admin/dashboard/class/assign_course','$data',TRUE);
       $this->load->view('backend/admin/layout',$data);
@@ -1173,14 +1173,14 @@ class Dashboard_admin extends CI_Controller
    public function save_application()
    {
       $date=new DateTime();
-      $user_info=$this->db->where('user_id',1)->get('users')->row();
+      $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
       $data = array(
         'user_email' => trim($this->input->post('application_receiver_email')),
         'application_subject' => trim($this->input->post('application_subject')),
         'application_description' => trim($this->input->post('application_description')),
         'application_date'=>trim($date->format('Y-m-d:H:i:s')),
-        'application_sender'=>trim($user_info->user_name),
-        'application_sender_email'=>trim($user_info->user_email),
+        'application_sender'=>trim($admin_info->User_Name),
+        'application_sender_email'=>trim($admin_info->User_Email),
         );
       $this->Common->set_data("applications", $data);
       $this->session->set_flashdata('msg', '<p class="alert alert-success">Send Successfully</p>');
@@ -1190,8 +1190,8 @@ class Dashboard_admin extends CI_Controller
    {
       $data['active_nav'] = "view_application";
       $admin_id = $this->session->userdata('admin_id');
-      $data['user_info']=$this->db->where('user_id',$admin_id)->get('users')->row();
-      $data['application_list']=$this->db->where('user_email',$data['user_info']->user_email)->order_by("application_date",'desc')->get('applications');
+      $data['admin_info']=$this->db->where('User_id',$admin_id)->get('admininfo')->row();
+      $data['application_list']=$this->db->where('user_email',$data['admin_info']->User_Email)->order_by("application_date",'desc')->get('applications');
       $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
       $data['main_content'] = $this->load->view('backend/admin/dashboard/application/view_application',$data,TRUE);
       $this->load->view('backend/admin/layout',$data);
@@ -1234,13 +1234,13 @@ class Dashboard_admin extends CI_Controller
       foreach($_POST['id'] as $key=>$item)
       {
         $date=new DateTime();
-        $user_info=$this->db->where('user_id',1)->get('users')->row();
+        $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
         $data = array(
               'user_email' => $item,
               'notice_subject' => trim($this->input->post('notice_subject')),
               'notice_description' => trim($this->input->post('notice_description')),
               'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-               'notice_sender'=>trim($user_info->user_name),
+               'notice_sender'=>trim($admin_info->User_Name),
           );
         $this->Common->set_data("notices", $data);
       }
@@ -1252,13 +1252,13 @@ class Dashboard_admin extends CI_Controller
       foreach($_POST['id'] as $key=>$item)
       {
         $date=new DateTime();
-        $user_info=$this->db->where('user_id',1)->get('users')->row();
+        $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
         $data = array(
               'user_email' => $item,
               'notice_subject' => trim($this->input->post('notice_subject')),
               'notice_description' => trim($this->input->post('notice_description')),
               'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-               'notice_sender'=>trim($user_info->user_name),
+               'notice_sender'=>trim($admin_info->User_Name),
           );
         $this->Common->set_data("notices", $data);
       }
@@ -1270,7 +1270,7 @@ class Dashboard_admin extends CI_Controller
       foreach($_POST['id'] as $key=>$item)
       {
         $date=new DateTime();
-        $user_info=$this->db->where('user_id',1)->get('users')->row();
+        $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
         $student_list=$this->db->where('student_session',$item)->get('students')->result();
         foreach ($student_list as $row) 
         {
@@ -1279,7 +1279,7 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => trim($this->input->post('notice_subject')),
                 'notice_description' => trim($this->input->post('notice_description')),
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $this->Common->set_data("notices", $data);
         }
@@ -1293,7 +1293,7 @@ class Dashboard_admin extends CI_Controller
       $student_list= $this->Common->get_data_sort_order('students','student_id','asc')->result();
       $stuff_list = $this->Common->get_data_sort_order('stuffs','stuff_id','asc')->result();
       $date=new DateTime();
-      $user_info=$this->db->where('user_id',1)->get('users')->row();
+      $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
       foreach ($student_list as $row) 
         {
           $data = array(
@@ -1301,12 +1301,12 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => trim($this->input->post('notice_subject')),
                 'notice_description' => trim($this->input->post('notice_description')),
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $this->Common->set_data("notices", $data);
         }
         $date=new DateTime();
-        $data['user_info']=$this->db->where('user_id',1)->get('users')->row();
+        $data['admin_info']=$this->db->where('User_id',1)->get('admininfo')->row();
         foreach ($teacher_list as $row) 
         {
           $data = array(
@@ -1314,12 +1314,12 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => trim($this->input->post('notice_subject')),
                 'notice_description' => trim($this->input->post('notice_description')),
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
           $this->Common->set_data("notices", $data);
         }
         $date=new DateTime();
-      $data['user_info']=$this->db->where('user_id',1)->get('users')->row();
+      $data['admin_info']=$this->db->where('User_id',1)->get('admininfo')->row();
         foreach ($stuff_list as $row) 
         {
           $data = array(
@@ -1327,7 +1327,7 @@ class Dashboard_admin extends CI_Controller
                 'notice_subject' => trim($this->input->post('notice_subject')),
                 'notice_description' => trim($this->input->post('notice_description')),
                 'notice_date'=>trim($date->format('Y-m-d:H:i:s')),
-                 'notice_sender'=>trim($user_info->user_name),
+                 'notice_sender'=>trim($admin_info->User_Name),
             );
          $this->Common->set_data("notices", $data);
         }
@@ -1337,8 +1337,8 @@ class Dashboard_admin extends CI_Controller
    public function see_sent_notice()
    {
       $data['active_nav'] = "see_sent_notice";
-      $user_info=$this->db->where('user_id',1)->get('users')->row();
-      $data['notice_list']=$this->db->where('notice_sender',$user_info->user_name)->order_by("notice_date",'desc')->get('notices');
+      $admin_info=$this->db->where('User_id',1)->get('admininfo')->row();
+      $data['notice_list']=$this->db->where('notice_sender',$admin_info->User_Name)->order_by("notice_date",'desc')->get('notices');
         $data['side_menu']=$this->load->view('backend/admin/side_menu',$data,TRUE);
         $data['main_content'] = $this->load->view('backend/admin/dashboard/notice/see_notice_list',$data,TRUE);
         $this->load->view('backend/admin/layout',$data);
